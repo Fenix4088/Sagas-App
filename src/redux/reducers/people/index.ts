@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {GetPeopleResp, Person} from '../../../types';
 
-interface InitialState {
+export interface InitialState {
   page: number;
   search: string;
   loading: boolean;
