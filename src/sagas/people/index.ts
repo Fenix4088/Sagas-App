@@ -1,5 +1,5 @@
 import { API } from '../../rest';
-import { call, fork, put, select, take, takeEvery } from 'redux-saga/effects';
+import { call, fork, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
 import { GetPeopleResp } from '../../types';
 import { loadUsers, loadUsersSuccess } from '../../redux/reducers/people';
 import { setPathname } from '../../redux/reducers/pathname';
@@ -10,7 +10,6 @@ export function* loadPeopleDetails() {}
 export function* loadPeopleList({ payload }: any) {
   const { page, search } = payload;
   const peopleData: GetPeopleResp = yield call(API.getPeople, page, search);
-
   yield put(loadUsersSuccess({...peopleData}));
 }
 
@@ -27,5 +26,5 @@ export function* loadUsersOnRoutEnter() {
 
 export function* peopleSaga() {
   yield fork(loadUsersOnRoutEnter);
-  yield takeEvery(loadUsers, loadPeopleList);
+  yield takeLatest(loadUsers, loadPeopleList);
 }
