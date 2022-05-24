@@ -1,9 +1,10 @@
 import { API } from '../../rest';
-import { call, fork, put, select, take, takeEvery, takeLatest } from 'redux-saga/effects';
+import { call, fork, put, select, take, takeEvery } from 'redux-saga/effects';
 import { GetPeopleResp } from '../../types';
 import { loadUsers, loadUsersSuccess } from '../../redux/reducers/people';
 import { setPathname } from '../../redux/reducers/pathname';
 import { PayloadAction } from '@reduxjs/toolkit';
+import { ROUTES } from '../../routes';
 
 export function* loadPeopleDetails() {}
 
@@ -16,7 +17,7 @@ export function* loadPeopleList({ payload }: any) {
 export function* loadUsersOnRoutEnter() {
   while (true) {
     const pathnameAction: PayloadAction<string> = yield take(setPathname);
-    if (pathnameAction.payload === '/') {
+    if (pathnameAction.payload === ROUTES.ROOT) {
       const { page, search } = yield select((s) => s.peopleReducer);
 
       yield put(loadUsers({ page, search }));
@@ -26,5 +27,5 @@ export function* loadUsersOnRoutEnter() {
 
 export function* peopleSaga() {
   yield fork(loadUsersOnRoutEnter);
-  yield takeLatest(loadUsers, loadPeopleList);
+  yield takeEvery(loadUsers, loadPeopleList);
 }

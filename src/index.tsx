@@ -1,25 +1,26 @@
 import './index.css';
-import App from './pages/App';
-import React from 'react'
+import React from 'react';
 import reportWebVitals from './reportWebVitals';
 import ReactDOM from 'react-dom';
-import {store} from "./redux";
+import { store } from './redux';
 import { Provider } from 'react-redux';
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import {ROUTES} from "./routes";
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {routes} from "./routes";
 
 ReactDOM.render(
-    <Provider store={store}>
-        <React.StrictMode>
-            <BrowserRouter>
-                <Routes>
-                    <Route path={ROUTES.ROOT} element={<App/>}/>
-                </Routes>
-            </BrowserRouter>
-        </React.StrictMode>
-    </Provider>
-    ,
-    document.getElementById('root') as HTMLElement
+  <Provider store={store}>
+    <React.StrictMode>
+      <BrowserRouter>
+        <Routes>
+          {/*<Route path={ROUTES.ROOT} element={<App/>}/>*/}
+          {routes.map((route) => (
+            <Route key={route.id} path={route.path} element={route.component} />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    </React.StrictMode>
+  </Provider>,
+  document.getElementById('root') as HTMLElement
 );
 
 
